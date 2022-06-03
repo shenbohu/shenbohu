@@ -1,0 +1,16 @@
+#不同的服务器，地址不同
+aliyun:
+  keyid: LTAI4Fv3hvv1N1ACDyTFL6ke
+  keysecret: g6OTQNt990kV9INWCt9gwZ9pq847Vu
+  oss:
+    file:
+      endpoint: oss-cn-hangzhou.aliyuncs.com
+      bucketname: shenbohu
+  smsutils:
+      SignName: 博虎
+      templateCode:
+        validate_codez: SMS_175061136 #发送短信验证码
+        order_notice:  SMS_175051399
+
+
+
