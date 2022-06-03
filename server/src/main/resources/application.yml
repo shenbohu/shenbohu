@@ -16,7 +16,7 @@ spring:
         #指定nacos注册中心地址
         server-addr: 127.0.0.1:8848
   profiles:
-    active: redis,satoken,wecah,aliyun ,mysql ,sharding
+    active: redis ,wecah,aliyun ,mysql ,sharding
 #eureka:
 #  client:
 #    service-url:
