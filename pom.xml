@@ -18,7 +18,8 @@
         <module>server</module>
         <module>gateway</module>
         <module>business</module>
-<!--        <module>sharding</module>-->
+        <module>Activiti</module>
+        <!--        <module>sharding</module>-->
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

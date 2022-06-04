@@ -1,0 +1,51 @@
+server:
+  port: 8083
+#  servlet:
+#    context-path: /act
+debug: false #设置开发及调试模式
+spring:
+  application:
+    name: activiti
+  cloud:
+    nacos:
+      discovery:
+        #指定nacos注册中心地址
+        server-addr: 127.0.0.1:8848
+  thymeleaf:
+    prefix: classpath:/templates/ #thymeleaf 所在路径
+    suffix: .html #thymeleaf 后缀
+    mode: HTML5 #thymeleaf 采用的标准
+    encoding: UTF-8 #thymeleaf 编码格式
+  http:
+    encoding:
+      charset: UTF-8
+  mvc:
+    date-format: yyyy-MM-dd #时间参数的格式化
+  jackson:
+    time-zone: GMT+8 #默认为格林尼治时间，设置为北京时间
+    date-format: yyyy-MM-dd HH:mm:ss SSS #设置时间的json的格式
+  profiles:
+    active: loc #指定数据源
+    datasource:
+      type: com.alibaba.druid.pool.DruidDataSource
+  activiti: #activiti rest 配置
+    database-schema-update: true
+      # 自动部署验证设置:true-开启（默认）、false-关闭
+    check-process-definitions: false
+    rest-api-enabled: true
+    rest-api-servlet-name: activiti-swagger-document
+    SpringProcessEngineConfiguration:
+      activityFontName: 宋体
+      labelFontName: 宋体
+      dataSource: datasource
+
+---
+#数据源
+spring:
+  profiles: loc
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: bohu0812
+    url: jdbc:mysql://localhost:3306/activiti?useUnicode=true&characterEncoding=utf-8&useSSL=false
+
