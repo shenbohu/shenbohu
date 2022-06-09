@@ -33,8 +33,10 @@
         </thead>
         <tbody>
         <tr th:each="actModel,actStat:${actList}">
-            <th scope="row" th:text="${actModel.id}"></th>
+            <th scope="row" th:text="${actModel.id}" style="text-align: center"></th>
+<!--
             <td th:text="${actModel.version}"></td>
+-->
             <td th:text="${actModel.key}"></td>
             <td th:text="${actModel.name}"></td>
             <td>
@@ -49,3 +51,8 @@
 </div>
 </body>
 </html>
+<style>
+    td{
+        text-align: center;
+    }
+</style>
