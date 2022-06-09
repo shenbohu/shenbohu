@@ -5,7 +5,7 @@ server:
 debug: false #设置开发及调试模式
 spring:
   application:
-    name: activiti
+    name: act
   cloud:
     nacos:
       discovery:

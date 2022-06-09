@@ -28,9 +28,9 @@ spring:
               - DELETE
       routes:
         - id: server   # 唯一标识符
-          uri: http://localhost:8081
+          uri: lb://server
           predicates:
-            - Path=/server/user/**
+            - Path=/server/**
           filters:
             - StripPrefix=1
             - name: RequestRateLimiter #请求数限流 名字不能随便写 ，使用默认的factory
@@ -43,35 +43,20 @@ spring:
                 redis-rate-limiter.burstCapacity: 1
 
         - id: business   # 唯一标识符
-          uri: http://localhost:8082
+          uri: lb://business
           predicates:
-            - Path=/business/cordits/**
-
+            - Path=/business/**
           filters:
             - StripPrefix=1
             - name: RequestRateLimiter #请求数限流 名字不能随便写 ，使用默认的factory
-              args:
-                # 用户身份唯一标识符
-#                key-resolver: "#{@ipKeyResolver}"
-                # 允许用户每秒执行多少请求，而不会丢弃任何请求。这是令牌桶填充的速率
-                redis-rate-limiter.replenishRate: 1
-                # 令牌桶的容量，允许在一秒钟内完成的最大请求数
-                redis-rate-limiter.burstCapacity: 1
-        - id: activiti   # 唯一标识符
-          uri: http://localhost:8083
+        - id: act   # 唯一标识符
+          uri: lb://act
           predicates:
             - Path=/act/**
 
           filters:
             - StripPrefix=1
             - name: RequestRateLimiter #请求数限流 名字不能随便写 ，使用默认的factory
-              args:
-                # 用户身份唯一标识符
-                #                key-resolver: "#{@ipKeyResolver}"
-                # 允许用户每秒执行多少请求，而不会丢弃任何请求。这是令牌桶填充的速率
-                redis-rate-limiter.replenishRate: 1
-                # 令牌桶的容量，允许在一秒钟内完成的最大请求数
-                redis-rate-limiter.burstCapacity: 1
   #Redis配置
   redis:
 #    host: 10.211.55.8
