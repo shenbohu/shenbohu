@@ -1,0 +1,35 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 1000MB
+  application:
+    name: server
+  cloud:
+    alibaba:
+      seata:
+        tx-service-group: test_tx_group
+    nacos:
+      discovery:
+        #指定nacos注册中心地址
+        server-addr: 127.0.0.1:8848
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yaml  # 必须修改成yaml
+        group: DEFAULT_GROUP  # 缺省即可
+        refreshable-dataids: server.yaml,aliyun.yaml,wecah.yaml  #自动刷新的配置
+        shared-dataids: server.yaml,aliyun.yaml,wecah.yaml  #配置
+    #    prefix: server  ,aly # 缺省即可
+
+logging:
+  level:
+    org:
+      springframework:
+        boot:
+          autoconfigure:
+            logging: info  #关闭spring日志
+    com:
+      alibaba:
+        nacos:
+          client:
+            naming: warn   #关闭nacos  config 日志
