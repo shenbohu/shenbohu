@@ -1,12 +1,9 @@
 package com.bohu.controller;
 
-import com.bohu.entity.PageResult;
 import com.bohu.entity.Result;
 import com.bohu.service.RestTemplateService;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
-import javax.persistence.Id;
 
 
 /**
