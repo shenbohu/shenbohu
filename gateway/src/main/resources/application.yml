@@ -32,7 +32,7 @@ spring:
           predicates:
             - Path=/server/**
           filters:
-            - StripPrefix=1
+            - StripPrefix=1  #移除前缀
             - name: RequestRateLimiter #请求数限流 名字不能随便写 ，使用默认的factory
               args:
                 # 用户身份唯一标识符

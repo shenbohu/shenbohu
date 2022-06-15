@@ -77,6 +77,7 @@ public class Result<T> {
     }
 
     public Result(boolean flag, Integer code, String message) {
+        Result result = new Result();
         this.flag = flag;
         this.code = code;
         this.message = message;

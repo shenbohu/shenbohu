@@ -1,11 +1,11 @@
 package com.bohu.service;
 
 
-import com.bohu.entity.PageResult;
+import com.bohu.entity.Result;
 
 public interface RestTemplateService {
 
 
-    PageResult gethj212();
+    Result healthCodeStatusById(String id) throws Exception;
 
 }

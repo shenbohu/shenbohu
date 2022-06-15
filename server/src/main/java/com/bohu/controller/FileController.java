@@ -17,7 +17,7 @@ import java.util.Map;
  **/
 @RestController
 @RequestMapping("/file")
-@CrossOrigin // 解决跨域
+//@CrossOrigin // 解决跨域
 public class FileController {
 
 

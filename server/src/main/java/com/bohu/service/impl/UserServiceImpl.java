@@ -187,7 +187,7 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
 
-        return null;
+        return Result.ok(integer);
     }
 
     @Override

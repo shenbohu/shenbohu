@@ -11,7 +11,11 @@ import com.aliyuncs.profile.IClientProfile;
 import lombok.Data;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
+
+import javax.security.auth.kerberos.KerberosKey;
+import java.security.Key;
 
 /**
  * @ClassName SMSUtils
@@ -21,6 +25,7 @@ import org.springframework.stereotype.Component;
  **/
 @Component
 @Data
+@RefreshScope
 public class SMSUtils implements InitializingBean {
 
     @Value("${aliyun.keysecret}")

@@ -2,9 +2,11 @@ package com.bohu.utils;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 
 @Component
+@RefreshScope
 public class ConstantPropertiesUtil implements InitializingBean {
 
     @Value("${aliyun.oss.file.endpoint}")

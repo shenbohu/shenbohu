@@ -10,6 +10,7 @@ import com.bohu.utils.StatusCode;
 import com.github.wxpay.sdk.WXPayUtil;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
@@ -33,6 +34,7 @@ import java.util.Objects;
  * @since 1.0
  */
 @Service
+@RefreshScope
 public class WeixinPayServiceImpl implements WeixinPayService {
 
     @Value("${weixin.appid}")

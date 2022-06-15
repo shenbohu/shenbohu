@@ -6,6 +6,8 @@ import com.bohu.entity.Result;
 import com.bohu.pojo.User;
 import com.bohu.service.UserService;
 import com.bohu.vo.UserVO;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,7 +16,15 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/user")
+@RefreshScope
 class UserController {
+
+
+    @Value("${server.port}")
+    public  String port;
+
+
+
 
     @Resource
     private UserService userService;
@@ -94,5 +104,10 @@ class UserController {
     }
 
 
+
+    @GetMapping("/publicKey")
+    public String getPublicKey(){
+        return port;
+    }
 
 }

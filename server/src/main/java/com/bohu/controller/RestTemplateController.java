@@ -1,10 +1,12 @@
 package com.bohu.controller;
 
 import com.bohu.entity.PageResult;
+import com.bohu.entity.Result;
 import com.bohu.service.RestTemplateService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.persistence.Id;
 
 
 /**
@@ -14,15 +16,15 @@ import javax.annotation.Resource;
  * @Version 1.0
  **/
 @RestController
-@RequestMapping("/hj212")
-@CrossOrigin // 解决跨域
+@RequestMapping("/rest")
+//@CrossOrigin // 解决跨域
 public class RestTemplateController {
     @Resource
-    private RestTemplateService hj212Service;
+    private RestTemplateService restTemplateService;
 
-    @GetMapping(value = "gethj212")
-    public PageResult gethj212() {
-        return hj212Service.gethj212();
+    @GetMapping(value = "healthCodeStatusById/{id}")
+    public Result healthCodeStatusById(@PathVariable(name = "id") String id ) throws Exception {
+        return restTemplateService.healthCodeStatusById(id);
     }
 
 

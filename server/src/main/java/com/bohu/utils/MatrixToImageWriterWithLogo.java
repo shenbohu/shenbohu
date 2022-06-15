@@ -171,7 +171,7 @@ public class MatrixToImageWriterWithLogo {
         MatrixToImageWriterWithLogo.encode("https://seata.io/zh-cn/docs/user/quickstart.html",
                 512, 512,
 
-                "/Users/shenbohu/Documents/shenbohu/sa-token/shenbohu/server/src/main/resources/document/weixin.jpeg",
+                "/Users/shenbohu/Documents/shenbohu/shenbohu/server/src/main/resources/document/weixin.jpeg",
                 "/Users/shenbohu/Downloads/iShot2021-06-18 09.44.36.png");
     }
 }

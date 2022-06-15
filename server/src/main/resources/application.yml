@@ -1,22 +1,22 @@
 server:
   port: 8081
 spring:
-  servlet:
-    multipart:
-      max-file-size: 100MB
-      max-request-size: 1000MB
-  application:
-    name: server
-  cloud:
-    alibaba:
-      seata:
-        tx-service-group: test_tx_group
-    nacos:
-      discovery:
-        #指定nacos注册中心地址
-        server-addr: 127.0.0.1:8848
+#  servlet:
+#    multipart:
+#      max-file-size: 100MB
+#      max-request-size: 1000MB
+#  application:
+#    name: server
+#  cloud:
+#    alibaba:
+#      seata:
+#        tx-service-group: test_tx_group
+#    nacos:
+#      discovery:
+#        #指定nacos注册中心地址
+#        server-addr: 127.0.0.1:8848
   profiles:
-    active: redis ,wecah,aliyun ,mysql ,sharding
+    active: redis ,mysql ,sharding
 #eureka:
 #  client:
 #    service-url:
@@ -36,9 +36,9 @@ mybatis:
     map-underscore-to-camel-case: true #自动将以下画线方式命名的数据库列映射到 Java 对象的驼峰式命名属性中
   mapper-locations: classpath:mapper/*Mapper.xml
   type-aliases-package: com.bohu.pojo
-logging:
-  level:
-    com: info  # 不加这个MyBatis Log插件不打印sql语句   trace info warn error debug
+#logging:
+#  level:
+#    com: info  # 不加这个MyBatis Log插件不打印sql语句   trace info warn error debug
 
 
 #server:
