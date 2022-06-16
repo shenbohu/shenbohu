@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yaml  # 必须修改成yaml
+        group: DEFAULT_GROUP  # 缺省即可
+        refreshable-dataids: gateway.yaml  #自动刷新的配置
+        shared-dataids: gateway.yaml  #配置
+
+
+

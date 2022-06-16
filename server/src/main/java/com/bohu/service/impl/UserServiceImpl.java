@@ -16,9 +16,7 @@ import com.bohu.entity.YmlConfig;
 import com.bohu.feign.corditsfeign;
 import com.bohu.pojo.*;
 import com.bohu.service.UserService;
-import com.bohu.utils.SMSUtils;
-import com.bohu.utils.StatusCode;
-import com.bohu.utils.ValidateCodeUtils;
+import com.bohu.utils.*;
 import com.bohu.vo.RightVO;
 import com.bohu.vo.UserVO;
 import com.github.pagehelper.Page;
@@ -30,12 +28,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.annotation.Resource;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -191,7 +186,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result userLogn(String username, String password) {
+    public Result userLogn(String username, String password , HttpServletResponse response) {
         //校验参数
         if (org.apache.commons.lang.StringUtils.isEmpty(username)) {
             throw new RuntimeException("请输入用户名");
@@ -199,12 +194,22 @@ public class UserServiceImpl implements UserService {
         if (org.apache.commons.lang.StringUtils.isEmpty(password)) {
             throw new RuntimeException("请输入密码");
         }
-//        password = MD5Utils.md5(password);
-        //password = SaSecureUtil.md5(password);
+        password = MD5Utils.md5(password);
         UserVO userVO = userMapper.selectByUsernameAdnPassword(username, password);
         if (userVO == null) {
             return new Result(false, StatusCode.ERROR, "userVO");
         }
+        Map<String,Object> tokenInfo = new HashMap<>();
+        tokenInfo.put("name",userVO.getName());
+        tokenInfo.put("username",username);
+        String jwt = JwtUtil.createJWT(UUID.randomUUID().toString(),tokenInfo.toString() , null);
+        userVO.setAuthorization(jwt);
+        Cookie cookie = new Cookie("Authorization",jwt);
+        cookie.setDomain("localhost");
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
+
         List<Role> roles = roleMapper.selectByUserRole(username);
         List<RightVO> rightVOS = new ArrayList<>();
         userVO.setRoles(roles);

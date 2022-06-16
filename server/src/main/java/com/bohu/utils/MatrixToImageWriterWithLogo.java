@@ -168,7 +168,7 @@ public class MatrixToImageWriterWithLogo {
     public static void main(String[] args) throws UnsupportedEncodingException {
 
         // 依次为内容(不支持中文),宽,长,中间图标路径,储存路径
-        MatrixToImageWriterWithLogo.encode("https://seata.io/zh-cn/docs/user/quickstart.html",
+        MatrixToImageWriterWithLogo.encode("我是你爹",
                 512, 512,
 
                 "/Users/shenbohu/Documents/shenbohu/shenbohu/server/src/main/resources/document/weixin.jpeg",

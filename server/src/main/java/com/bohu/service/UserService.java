@@ -6,6 +6,8 @@ import com.bohu.entity.Result;
 import com.bohu.vo.UserVO;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+
 public interface UserService {
 
 
@@ -19,7 +21,7 @@ public interface UserService {
 
     Result getcode(String type, String phone);
 
-    Result userLogn(String username, String password);
+    Result userLogn(String username, String password , HttpServletResponse response);
 
 
 }

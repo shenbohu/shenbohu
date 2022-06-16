@@ -68,3 +68,7 @@ hystrix:
             timeoutInMilliseconds: 10000 #断路器超时时间，默认1000ms
 autoconfigure:
   exclude: org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration #排除eureka注册中心
+management:
+  endpoint:
+    health:
+      enabled: true

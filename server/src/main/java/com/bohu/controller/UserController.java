@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 
 @RestController
@@ -31,8 +32,8 @@ class UserController {
 
     @RequestMapping("/login")
     @ResponseBody
-    public Result login(String username, String password) {
-        return userService. userLogn(username, password);
+    public Result login(String username, String password , HttpServletResponse response) {
+        return userService. userLogn(username, password ,response);
 
     }
 

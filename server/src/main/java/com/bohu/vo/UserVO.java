@@ -26,7 +26,8 @@ public class UserVO extends User {
 
     private List<RightVO> rightVOS; //用户的权限
 
-    //private SaTokenInfo tokenInfo; //token详细参数
+    private String  Authorization; //用户的token
+
 
 
 }
