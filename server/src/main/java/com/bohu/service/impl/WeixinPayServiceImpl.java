@@ -6,7 +6,7 @@ import com.bohu.entity.Result;
 import com.bohu.service.WeixinPayService;
 import com.bohu.utils.HttpClient;
 import com.bohu.utils.MatrixToImageWriterWithLogo;
-import com.bohu.utils.StatusCode;
+import com.bohu.entity.StatusCode;
 import com.github.wxpay.sdk.WXPayUtil;
 
 import org.springframework.beans.factory.annotation.Value;

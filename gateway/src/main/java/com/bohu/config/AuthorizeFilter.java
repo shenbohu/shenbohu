@@ -1,8 +1,10 @@
 package com.bohu.config;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -10,10 +12,13 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Robod
@@ -47,9 +52,16 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
             }
         }
         //还是没有Token就拦截
+        response.setStatusCode(HttpStatus.SEE_OTHER);
+        response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+        Map map = new HashMap();
+        map.put("flag",false);
+        map.put("code",303);
+        map.put("message","没有token/token错误");
+        DataBuffer dataBuffer = response.bufferFactory().wrap(JSON.toJSONString(map).getBytes());
         if (StringUtils.isEmpty(token)){
-            response.setStatusCode(HttpStatus.UNAUTHORIZED);
-            return response.setComplete();
+            return response.writeWith(Flux.just(dataBuffer));
+            //return response.setComplete();
         } else {
             if (!hasTokenInHeader) {
                 if (!(token.startsWith("brarer") || token.startsWith("Bearer"))) {
@@ -63,8 +75,8 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
              JwtUtil.parseJWT(token);
          } catch (Exception e) {
              //报异常说明Token是错误的，拦截
-             response.setStatusCode(HttpStatus.UNAUTHORIZED);
-             return response.setComplete();
+             return response.writeWith(Flux.just(dataBuffer));
+            // return response.setComplete();
          }
         return chain.filter(exchange);
     }

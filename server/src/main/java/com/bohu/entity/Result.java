@@ -1,6 +1,5 @@
 package com.bohu.entity;
 
-import com.bohu.utils.StatusCode;
 import lombok.Data;
 
 /**

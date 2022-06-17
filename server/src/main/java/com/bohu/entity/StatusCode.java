@@ -1,4 +1,4 @@
-package com.bohu.utils;
+package com.bohu.entity;
 
 /**
  * 返回码
