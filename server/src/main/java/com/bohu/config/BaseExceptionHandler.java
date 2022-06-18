@@ -1,5 +1,6 @@
 package com.bohu.config;
 
+import com.bohu.entity.Result;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,10 +18,7 @@ public class BaseExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public String  Exception(Exception e , HttpServletRequest request) {
-        if (e instanceof  Exception) {
-            return  " 请登录" ;
-        }
-        return  " 请登录" ;
+    public Result Exception(Exception e , HttpServletRequest request) {
+        return Result.error(e.getMessage());
     }
 }

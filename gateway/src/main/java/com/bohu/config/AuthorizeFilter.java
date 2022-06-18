@@ -1,6 +1,7 @@
 package com.bohu.config;
 
 import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -25,6 +26,7 @@ import java.util.Map;
  * @date 2020/8/5 11:07
  */
 @Component
+@Slf4j
 public class AuthorizeFilter implements GlobalFilter, Ordered {
 
     private static final String AUTHORIZE_TOKEN = "Authorization";
@@ -32,22 +34,23 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
+     //   log.info(request.getURI().toString());
         ServerHttpResponse response = exchange.getResponse();
-        if (needlessToken(request.getURI().toString())) {
+        if (needlessToken(request.getPath().toString())) {
             return chain.filter(exchange);
         }
         //从头中获取Token
         String token = request.getHeaders().getFirst(AUTHORIZE_TOKEN);
         boolean hasTokenInHeader = true;
         //请求头中没有Token就从参数中获取
-        if (StringUtils.isEmpty(token)){
+        if (StringUtils.isEmpty(token)) {
             token = request.getQueryParams().getFirst(AUTHORIZE_TOKEN);
             hasTokenInHeader = false;
         }
         //参数中再没有Token就从Cookie中获取
-        if (StringUtils.isEmpty(token)){
+        if (StringUtils.isEmpty(token)) {
             HttpCookie cookie = request.getCookies().getFirst(AUTHORIZE_TOKEN);
-            if (cookie!=null){
+            if (cookie != null) {
                 token = cookie.getValue();
             }
         }
@@ -55,11 +58,11 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
         response.setStatusCode(HttpStatus.SEE_OTHER);
         response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
         Map map = new HashMap();
-        map.put("flag",false);
-        map.put("code",303);
-        map.put("message","没有token/token错误");
+        map.put("flag", false);
+        map.put("code", 303);
+        map.put("message", "没有token/token错误");
         DataBuffer dataBuffer = response.bufferFactory().wrap(JSON.toJSONString(map).getBytes());
-        if (StringUtils.isEmpty(token)){
+        if (StringUtils.isEmpty(token)) {
             return response.writeWith(Flux.just(dataBuffer));
             //return response.setComplete();
         } else {
@@ -67,33 +70,31 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
                 if (!(token.startsWith("brarer") || token.startsWith("Bearer"))) {
                     token = "Bearer" + token;
                 }
-                request.mutate().header("Authorization",token);
+                request.mutate().header("Authorization", token);
             }
         }
         //Token不为空就校验Token
-         try {
-             JwtUtil.parseJWT(token);
-         } catch (Exception e) {
-             //报异常说明Token是错误的，拦截
-             return response.writeWith(Flux.just(dataBuffer));
+        try {
+            JwtUtil.parseJWT(token);
+        } catch (Exception e) {
+            //报异常说明Token是错误的，拦截
+            return response.writeWith(Flux.just(dataBuffer));
             // return response.setComplete();
-         }
+        }
         return chain.filter(exchange);
     }
 
     //判断指定的uri是否不需要token就可以访问，true表示不需要
     public boolean needlessToken(String uri) {
         List<String> urls = new ArrayList<>();
-        urls.add("/user/add");
-        urls.add("/user/login");
-        for (String url : urls) {
-            if (uri.contains(url)) {
-                return true;
-            }
+        urls.add("/server/user/add");
+        urls.add("/server/user/login");
+        urls.add("/server/user/logins");
+        if (urls.contains(uri)) {
+            return true;
         }
         return false;
     }
-
 
 
     @Override
