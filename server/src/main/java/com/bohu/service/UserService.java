@@ -21,7 +21,7 @@ public interface UserService {
 
     Result getcode(String type, String phone);
 
-    Result userLogn(String username, String password , HttpServletResponse response);
+    Result userLogn(UserVO userVO, HttpServletResponse response);
 
 
 }

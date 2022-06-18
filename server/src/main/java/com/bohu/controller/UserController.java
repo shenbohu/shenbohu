@@ -16,26 +16,32 @@ import javax.servlet.http.HttpServletResponse;
 
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping(value = "/user")
 @RefreshScope
-class UserController {
+public class UserController {
 
 
     @Value("${server.port}")
-    public  String port;
-
-
+    public String port;
 
 
     @Resource
     private UserService userService;
 
-    @RequestMapping("/login")
-    @ResponseBody
-    public Result login(String username, String password , HttpServletResponse response) {
-        return userService. userLogn(username, password ,response);
+//    @Resource
+//    private UserDetailsService userDetailsService;
+
+    @PostMapping("/login")
+    public Result login(@RequestBody UserVO userVO, HttpServletResponse response) {
+        return userService.userLogn(userVO, response);
 
     }
+
+//    @GetMapping("/logins")
+//    public UserDetails logins() {
+//        return userDetailsService.loadUserByUsername("s");
+//
+//    }
 
 
     /***
@@ -101,9 +107,8 @@ class UserController {
     }
 
 
-
     @GetMapping("/publicKey")
-    public String getPublicKey(){
+    public String getPublicKey() {
         return port;
     }
 

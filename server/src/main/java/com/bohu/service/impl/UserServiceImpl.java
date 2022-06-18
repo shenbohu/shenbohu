@@ -1,10 +1,6 @@
 package com.bohu.service.impl;
 
 
-//import cn.dev33.satoken.secure.SaSecureUtil;
-//import cn.dev33.satoken.session.SaSession;
-//import cn.dev33.satoken.stp.SaTokenInfo;
-//import cn.dev33.satoken.stp.StpUtil;
 import com.bohu.dao.Appstore.RightMapper;
 import com.bohu.dao.Appstore.RoleMapper;
 import com.bohu.dao.Appstore.UserMapper;
@@ -26,8 +22,10 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.StringUtils;
+
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -43,7 +41,7 @@ import java.util.concurrent.TimeUnit;
  **/
 @Service
 //@Configuration
-@Data
+@Transactional(transactionManager = "appstoreTransactionManager")
 public class UserServiceImpl implements UserService {
     @Resource
     private UserMapper userMapper;
@@ -186,25 +184,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result userLogn(String username, String password , HttpServletResponse response) {
+    public Result userLogn(UserVO user, HttpServletResponse response) {
         //校验参数
-        if (org.apache.commons.lang.StringUtils.isEmpty(username)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(user.getUsername())) {
             throw new RuntimeException("请输入用户名");
         }
-        if (org.apache.commons.lang.StringUtils.isEmpty(password)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(user.getPassword())) {
             throw new RuntimeException("请输入密码");
         }
+        String password = user.getPassword();
+        String username = user.getUsername();
         password = MD5Utils.md5(password);
         UserVO userVO = userMapper.selectByUsernameAdnPassword(username, password);
         if (userVO == null) {
-            return new Result(false, StatusCode.ERROR, "userVO");
+            return new Result(false, StatusCode.ERROR, "账号或密码错误");
         }
-        Map<String,Object> tokenInfo = new HashMap<>();
-        tokenInfo.put("name",userVO.getName());
-        tokenInfo.put("username",username);
-        String jwt = JwtUtil.createJWT(UUID.randomUUID().toString(),tokenInfo.toString() , null);
+        Map<String, Object> tokenInfo = new HashMap<>();
+        tokenInfo.put("name", userVO.getName());
+        tokenInfo.put("username", username);
+        String jwt = JwtUtil.createJWT(UUID.randomUUID().toString(), tokenInfo.toString(), null);
         userVO.setAuthorization(jwt);
-        Cookie cookie = new Cookie("Authorization",jwt);
+        Cookie cookie = new Cookie("Authorization", jwt);
         cookie.setDomain("localhost");
         cookie.setPath("/");
         response.addCookie(cookie);

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +53,8 @@ public class FileController {
     public Result downloadTeacherImg(@RequestParam("url") String url) throws Exception {
         return fileService.downloadTeacherImg(url);
     }
+
+
 
 
     @PostMapping("uploadThumbnails")
