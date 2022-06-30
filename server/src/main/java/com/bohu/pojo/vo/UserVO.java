@@ -1,4 +1,4 @@
-package com.bohu.vo;
+package com.bohu.pojo.vo;
 
 
 import com.bohu.pojo.Role;

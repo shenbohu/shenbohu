@@ -2,7 +2,7 @@ package com.bohu.dao.Appstore;
 
 
 import com.bohu.pojo.User;
-import com.bohu.vo.UserVO;
+import com.bohu.pojo.vo.UserVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

@@ -12,10 +12,10 @@ import com.bohu.entity.StatusCode;
 import com.bohu.entity.YmlConfig;
 import com.bohu.feign.corditsfeign;
 import com.bohu.pojo.*;
+import com.bohu.pojo.vo.RightVO;
+import com.bohu.pojo.vo.UserVO;
 import com.bohu.service.UserService;
 import com.bohu.utils.*;
-import com.bohu.vo.RightVO;
-import com.bohu.vo.UserVO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.Data;
@@ -221,19 +221,18 @@ public class UserServiceImpl implements UserService {
             rightVOS = rightMapper.selectByIds(roleids);
             userVO.setRightVOS(rightVOS);
         }
-        userVO.setTokenValueByLoginId("");
+        userVO.setTokenValueByLoginId("");;
         //存储
         if (roles.size() != 0) {
             redisTemplate.opsForList().rightPushAll(username + "role", roles);
         } else {
-            redisTemplate.opsForList().rightPushAll(username + "rolenull", "null");
+            redisTemplate.opsForList().rightPushAll(username + "rolenull", "111");
         }
         if (rightVOS.size() != 0) {
             redisTemplate.opsForList().rightPushAll(username + "right", rightVOS);
         } else {
-            redisTemplate.opsForList().rightPushAll(username + "rightnull", "null");
+            redisTemplate.opsForList().rightPushAll(username + "rightnull", "22");
         }
-
         return new Result(true, StatusCode.OK, userVO);
     }
 

@@ -18,7 +18,7 @@
         from `right`
         where RIGHTID = #{rightid,jdbcType=VARCHAR}
     </select>
-    <select id="selectByIds" resultType="com.bohu.vo.RightVO">
+    <select id="selectByIds" resultType="com.bohu.pojo.vo.RightVO">
         select
         r.RIGHTID,r. CDATE, r.UDATE, r.FOUNDER, r.DESCRIPTION, r.`NAME`
         , o.ROLEID, o.`C`, o.R, o.U, o.D

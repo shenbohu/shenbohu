@@ -161,12 +161,18 @@ public class RestTemplateServiceImpl implements RestTemplateService {
             map1.add("sign", sign);
             map1.add("syscode", "bisp-test");
             map1.add("params", "{\"cardId\":\"" + idsfz + "\"}");
+
+            System.out.println(map1);
+            if (true) {
+                return null;
+            }
             headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
             HttpEntity<MultiValueMap<String, String>> request1 =
                     new HttpEntity<MultiValueMap<String, String>>(map1, headers);
             Hdnucleic hdnucleic = restTemplate.postForObject(url, request1, Hdnucleic.class);
             List<HdnucleicRow> rows = hdnucleic.getRows();
+            System.out.println(rows);
             List<String> dates = new ArrayList<>();
             List<String> isPositives = new ArrayList<>();
             if (CollectionUtils.isNotEmpty(rows)) {

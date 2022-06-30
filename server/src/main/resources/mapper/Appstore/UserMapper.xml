@@ -29,7 +29,7 @@
         <include refid="Base_Column_List"/>
         from user
     </select>
-    <select id="selectByUsernameAdnPassword" resultType="com.bohu.vo.UserVO">
+    <select id="selectByUsernameAdnPassword" resultType="com.bohu.pojo.vo.UserVO">
         select
         <include refid="Base_Column_List"/>
         from user

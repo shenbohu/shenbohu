@@ -1,7 +1,7 @@
 package com.bohu.dao.Appstore;
 
 import com.bohu.pojo.Right;
-import com.bohu.vo.RightVO;
+import com.bohu.pojo.vo.RightVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

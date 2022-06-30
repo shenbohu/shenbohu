@@ -3,8 +3,7 @@ package com.bohu.service;
 import com.bohu.pojo.User;
 import com.bohu.entity.PageResult;
 import com.bohu.entity.Result;
-import com.bohu.vo.UserVO;
-import org.springframework.web.multipart.MultipartFile;
+import com.bohu.pojo.vo.UserVO;
 
 import javax.servlet.http.HttpServletResponse;
 

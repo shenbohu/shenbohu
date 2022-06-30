@@ -59,19 +59,19 @@ public class FileController {
 
     @PostMapping("uploadThumbnails")
     public Result uploadThumbnails(@RequestParam("file") MultipartFile file , HttpServletRequest request) throws  Exception{
-        Claims authorization = JwtUtil.parseJWT(request.getHeader("Authorization"));
-        String s = authorization.getSubject();
-        s = s.substring(1, s.length() - 1);
-        String[] strs = s.split(",");
-        Map<String, String> map = new HashMap<String, String>();
-        for (String string : strs) {
-            String key = string.split("=")[0].trim();
-            String value = string.split("=")[1];
-            map.put(key, value);
-        }
-
-        String name = map.get("name");
-        String username = map.get("username");
+//        Claims authorization = JwtUtil.parseJWT(request.getHeader("Authorization"));
+//        String s = authorization.getSubject();
+//        s = s.substring(1, s.length() - 1);
+//        String[] strs = s.split(",");
+//        Map<String, String> map = new HashMap<String, String>();
+//        for (String string : strs) {
+//            String key = string.split("=")[0].trim();
+//            String value = string.split("=")[1];
+//            map.put(key, value);
+//        }
+//
+//        String name = map.get("name");
+//        String username = map.get("username");
 
 
         return fileService.uploadThumbnails(file);
