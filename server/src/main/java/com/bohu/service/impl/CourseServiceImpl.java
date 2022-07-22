@@ -45,7 +45,7 @@ public class CourseServiceImpl implements CourseService {
         PageHelper.startPage(Integer.parseInt(pageNum), Integer.parseInt(pageSize));
         courses = courseMapper.selectAll();
         PageInfo pageInfo = new PageInfo(courses);
-        return new PageResult(pageInfo.getTotal(), courses);
+        return  PageResult.ok(pageInfo.getTotal(), courses);
     }
 
 

@@ -1,6 +1,7 @@
 package com.bohu.controller;
 
 
+import com.bohu.config.MyPermission;
 import com.bohu.entity.PageResult;
 import com.bohu.entity.Result;
 import com.bohu.pojo.User;
@@ -51,7 +52,7 @@ public class UserController {
      * @Param: [pageNum, pageSize]
      * @return:
      **/
-
+    @MyPermission
     @GetMapping(value = "users/{pageNum}/{pageSize}")
     public PageResult findAll(@PathVariable("pageNum") String pageNum, @PathVariable("pageSize") String pageSize) {
         return userService.findAll(pageNum, pageSize);
@@ -65,6 +66,7 @@ public class UserController {
      * @return:
      **/
     @GetMapping(value = "userbyid/{id}")
+    @MyPermission(username = "admin")
     public Result getUserById(@PathVariable("id") String id) {
         return userService.getUserById(id);
     }

@@ -69,13 +69,13 @@ public class UserServiceImpl implements UserService {
     public PageResult findAll(String pageNum, String pageSize) {
         Page page = PageHelper.startPage(Integer.parseInt(pageNum), Integer.parseInt(pageSize));
         List<User> userList = userMapper.selectall();
-        return new PageResult(page.getTotal(), userList);
+        return PageResult.ok(page.getTotal(), userList);
     }
 
     @Override
     public Result getUserById(String id) {
         User user = userMapper.selectByPrimaryKey(id);
-        return new Result(true, StatusCode.OK, user);
+        return Result.ok(user);
     }
 
     @Override
@@ -221,7 +221,8 @@ public class UserServiceImpl implements UserService {
             rightVOS = rightMapper.selectByIds(roleids);
             userVO.setRightVOS(rightVOS);
         }
-        userVO.setTokenValueByLoginId("");;
+        userVO.setTokenValueByLoginId("");
+        ;
         //存储
         if (roles.size() != 0) {
             redisTemplate.opsForList().rightPushAll(username + "role", roles);
