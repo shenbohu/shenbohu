@@ -1,8 +1,10 @@
 package com.bohu.config;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bohu.dao.Appstore.UserMapper;
 import com.bohu.entity.PageResult;
 import com.bohu.entity.Result;
+import com.bohu.pojo.User;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -12,6 +14,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +30,10 @@ import java.util.Objects;
 @Aspect
 @Slf4j
 public class MyPermissionAspect implements Ordered {
+
+    @Resource
+    private UserMapper userMapper;
+
     @Pointcut("execution(* com.bohu.controller..*(..))")
     public void permissionTest() {
 
@@ -53,6 +60,7 @@ public class MyPermissionAspect implements Ordered {
 
         // JSONObject json = JSONObject.parseObject(String.valueOf(args[0]));
         String username = myPermission.username();
+        //List<User> selectall = userMapper.selectall();
         if (!"admin1".equals(username)) {
             if (Objects.equals("com.bohu.entity.PageResult", typeName)) {
                 return PageResult.ok("需要" + username + "权限");
