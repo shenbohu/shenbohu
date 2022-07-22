@@ -29,20 +29,12 @@ public class UserController {
     @Resource
     private UserService userService;
 
-//    @Resource
-//    private UserDetailsService userDetailsService;
 
     @PostMapping("/login")
     public Result login(@RequestBody UserVO userVO, HttpServletResponse response) {
         return userService.userLogn(userVO, response);
 
     }
-
-//    @GetMapping("/logins")
-//    public UserDetails logins() {
-//        return userDetailsService.loadUserByUsername("s");
-//
-//    }
 
 
     /***
@@ -109,9 +101,10 @@ public class UserController {
     }
 
 
-    @GetMapping("/publicKey")
-    public String getPublicKey() {
-        return port;
+    @MyPermission
+    @GetMapping(value = "getallusers")
+    public Result getallusers() {
+        return userService.getallusers();
     }
 
 }

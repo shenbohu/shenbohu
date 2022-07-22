@@ -3,6 +3,7 @@ package com.bohu.config;
 import com.alibaba.fastjson.JSONObject;
 import com.bohu.entity.PageResult;
 import com.bohu.entity.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -12,6 +13,8 @@ import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -22,6 +25,7 @@ import java.util.Objects;
  **/
 @Component
 @Aspect
+@Slf4j
 public class MyPermissionAspect implements Ordered {
     @Pointcut("execution(* com.bohu.controller..*(..))")
     public void permissionTest() {
@@ -44,10 +48,8 @@ public class MyPermissionAspect implements Ordered {
             return joinPoint.proceed();
         }
 
-        Object[] args = joinPoint.getArgs();
-        if (null == args || args.length == 0) {
-            return "参数为空";
-        }
+        List args = Arrays.asList(joinPoint.getArgs());
+        log.info(args.toString());
 
         // JSONObject json = JSONObject.parseObject(String.valueOf(args[0]));
         String username = myPermission.username();

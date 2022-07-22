@@ -23,4 +23,6 @@ public interface UserService {
     Result userLogn(UserVO userVO, HttpServletResponse response);
 
 
+    Result getallusers();
+
 }

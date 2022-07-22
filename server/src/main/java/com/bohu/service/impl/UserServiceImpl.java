@@ -238,4 +238,8 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Override
+    public Result getallusers() {
+        return Result.ok(userMapper.selectall());
+    }
 }
