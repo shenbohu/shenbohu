@@ -65,7 +65,7 @@ public class ShardingJdbcConfig {
         //如果有多个数据表需要分表，依次添加到这里
         shardingRuleConfig.getTableRuleConfigs().add(getOrderTableRuleConfiguration());
         Properties p = new Properties();
-        p.setProperty("sql.show", Boolean.TRUE.toString());
+        p.setProperty("sql.show", Boolean.FALSE.toString()); //是否打印日志
         // 获取数据源对象
         DataSource dataSource = ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfig,p);
         return dataSource;
