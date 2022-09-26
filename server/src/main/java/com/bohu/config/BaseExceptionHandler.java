@@ -19,6 +19,7 @@ public class BaseExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public Result Exception(Exception e , HttpServletRequest request) {
+        e.printStackTrace();
         return Result.error(e.getMessage());
     }
 }
