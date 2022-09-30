@@ -1,8 +1,9 @@
 package com.bohu.pojo;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * roleright

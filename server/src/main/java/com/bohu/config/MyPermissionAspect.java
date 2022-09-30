@@ -1,10 +1,8 @@
 package com.bohu.config;
 
-import com.alibaba.fastjson.JSONObject;
 import com.bohu.dao.Appstore.UserMapper;
 import com.bohu.entity.PageResult;
 import com.bohu.entity.Result;
-import com.bohu.pojo.User;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

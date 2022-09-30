@@ -5,12 +5,11 @@ import com.bohu.config.MyPermission;
 import com.bohu.entity.PageResult;
 import com.bohu.entity.Result;
 import com.bohu.pojo.User;
-import com.bohu.service.UserService;
 import com.bohu.pojo.vo.UserVO;
+import com.bohu.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
-
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;

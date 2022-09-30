@@ -8,12 +8,12 @@ import com.bohu.pojo.Course;
 import com.bohu.service.CourseService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.shardingsphere.api.hint.HintManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -35,8 +35,8 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public PageResult getallcourse(String pageNum, String pageSize) {
         List<Course> courses = new ArrayList<>();
-        HintManager hintManager = HintManager.getInstance();
-        hintManager.setMasterRouteOnly();
+//        HintManager hintManager = HintManager.getInstance();
+//        hintManager.setMasterRouteOnly();
         PageHelper.startPage(Integer.parseInt(pageNum), Integer.parseInt(pageSize));
         courses = courseMapper.selectAll();
         PageInfo pageInfo = new PageInfo(courses);

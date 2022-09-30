@@ -1,45 +1,33 @@
 package com.bohu.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSON;
 import com.bohu.entity.Result;
 import com.bohu.entity.StatusCode;
-import com.bohu.nucleichealth.RasClientDetail;
-import com.bohu.nucleichealth.RasClientDetailSoap;
+import com.bohu.entity.YmlConfig;
 import com.bohu.nucleichealth.RsaCoderUtil;
-import com.bohu.pojo.Hdnucleic;
-import com.bohu.pojo.HdnucleicRow;
+import com.bohu.pojo.Device;
 import com.bohu.pojo.Health;
 import com.bohu.pojo.User;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
-import org.joda.time.DateTime;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
-import org.springframework.stereotype.Service;
-import com.bohu.entity.YmlConfig;
-
 import com.bohu.service.RestTemplateService;
 import lombok.Data;
-import org.springframework.context.annotation.Configuration;
+import org.apache.juli.logging.Log;
+import org.apache.juli.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.security.MessageDigest;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
-
 import static com.bohu.nucleichealth.Main.bytesToHex;
-import static com.bohu.nucleichealth.Main.getSignParams;
 
 
 /**
@@ -49,7 +37,7 @@ import static com.bohu.nucleichealth.Main.getSignParams;
  * @Version 1.0
  **/
 @Service
-@Configuration
+//@Configuration
 @Data
 public class RestTemplateServiceImpl implements RestTemplateService {
 
@@ -64,7 +52,7 @@ public class RestTemplateServiceImpl implements RestTemplateService {
 
     @Override
     public Result healthCodeStatusById(String id) throws Exception {
-
+        Health health = new Health();
         Date max = null;
         String type = null;
         Integer result = null;
@@ -106,7 +94,7 @@ public class RestTemplateServiceImpl implements RestTemplateService {
             map.add("sign", "23456789abcdefg");
             HttpEntity<MultiValueMap<String, String>> request =
                     new HttpEntity<MultiValueMap<String, String>>(map, headers);
-            Health health = restTemplate.postForObject(url, request, Health.class);
+            health = restTemplate.postForObject(url, request, Health.class);
             if (health != null && Objects.equals("success", health.getErrmsg())) {
                 LinkedHashMap data = health.getData();
                 if (data != null) {
@@ -122,117 +110,142 @@ public class RestTemplateServiceImpl implements RestTemplateService {
             log.info(health);
 
 
-            RasClientDetail rasClientDetails = new RasClientDetail();
-            RasClientDetailSoap rasClientDetailSoap = rasClientDetails.getRasClientDetailSoap();
-            String clientId = "中国民用航空重庆安全监督管理局（重庆航空）";
-            String clientGuid = "2AA70E3447484E7AA90CBDC36A9F9BCF";
-            byte bytevalue = 2;
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd");//日期格式
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, -14);
-            Date startDate = calendar.getTime();
-            //513030199201300010
-            String c = rasClientDetailSoap.getDetailDataByIdNum(clientId, clientGuid, id, bytevalue, format.format(startDate), format.format(new Date()));
-            if (StringUtils.isNotEmpty(c) && c.contains("完成")) {
-                List<Date> dates = new ArrayList<>();
-                List<String> finals = new ArrayList<>();
-                Document parse = Jsoup.parse(c);
-                Elements blood = parse.getElementsByTag("blood");//
-                blood.forEach(bs -> {
-                    Elements aFinal = bs.getElementsByTag("FINAL");
-                    Elements collectddate = bs.getElementsByTag("COLLECTDDATE");
-                    String text = collectddate.text();
-                    String ainal = aFinal.text();
-                    Date date = new DateTime(text).toDate();
-                    dates.add(date);
-                    finals.add(ainal);
-    //                System.out.println(text);
-    //                System.out.println(ainal);
-                });
-                if (CollectionUtils.isNotEmpty(dates)) {
-
-                    max = Collections.max(dates);
-                    int i = dates.indexOf(max);
-                    type = finals.get(i);
-                }
-            } else {
-
-                Map<String, Object> smap = getSignParams("bisp-test", "123456");
-                String sign = (String) smap.get("sign");
-                String timestamp1 = (String) smap.get("timestamp");
-                //提交参数设置
-                MultiValueMap<String, String> map1 = new LinkedMultiValueMap<>();
-                url = "https://hbms.bgi.com/bisp-all2/intf?method=findReportSummary";
-                //440883198901020015
-                String idsfz = id;
-                map1.add("timestamp", timestamp1);
-                map1.add("sign", sign);
-                map1.add("syscode", "bisp-test");
-                map1.add("params", "{\"cardId\":\"" + idsfz + "\"}");
-
-                headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-                HttpEntity<MultiValueMap<String, String>> request1 =
-                        new HttpEntity<MultiValueMap<String, String>>(map1, headers);
-                Hdnucleic hdnucleic = restTemplate.postForObject(url, request1, Hdnucleic.class);
-                List<HdnucleicRow> rows = hdnucleic.getRows();
-                System.out.println(rows);
-                List<String> dates = new ArrayList<>();
-                List<String> isPositives = new ArrayList<>();
-                if (CollectionUtils.isNotEmpty(rows)) {
-                    for (HdnucleicRow row : rows) {
-                        String sampleTestDatePre = row.getSampleTestDatePre();
-                        String sampleTestTimePre = row.getSampleTestTimePre();
-                        String sampleTestDateSims = row.getSampleTestDateSims();
-                        String sampleTestTimeSims = row.getSampleTestTimeSims();
-                        String isPositive = row.getIsPositive();
-                        if (!Objects.equals("00000000", sampleTestDatePre)) {
-                            dates.add(sampleTestDatePre + sampleTestTimePre);
-                            isPositives.add(isPositive);
-                        } else if (!Objects.equals("00000000", sampleTestDateSims)) {
-                            dates.add(sampleTestDateSims + sampleTestTimeSims);
-                            isPositives.add(isPositive);
-                        }
-                    }
-                }
-                format = new SimpleDateFormat("yyyyMMddHHmmss");//日期格式
-                if (CollectionUtils.isNotEmpty(dates)) {
-                    String maxs = Collections.max(dates);
-                    max = format.parse(maxs);
-                    int i = dates.indexOf(maxs);
-                    type = isPositives.get(i);
-                }
-            }
-
-            mapvalue = new HashMap();
-            switch (type) {
-                case "阴性":
-                    type = "1";
-                    break;
-                case "阳性":
-                    type = "2";
-                    break;
-                case "Y":
-                    type = "2";
-                    break;
-                case "N":
-                    type = "1";
-                    break;
-                case "F":
-                    type = "0";
-                    break;
-                default:
-            }
+//            RasClientDetail rasClientDetails = new RasClientDetail();
+//            RasClientDetailSoap rasClientDetailSoap = rasClientDetails.getRasClientDetailSoap();
+//            String clientId = "中国民用航空重庆安全监督管理局（重庆航空）";
+//            String clientGuid = "2AA70E3447484E7AA90CBDC36A9F9BCF";
+//            byte bytevalue = 2;
+//            DateFormat format = new SimpleDateFormat("yyyy-MM-dd");//日期格式
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.add(Calendar.DATE, -14);
+//            Date startDate = calendar.getTime();
+//            //513030199201300010
+//            String c = rasClientDetailSoap.getDetailDataByIdNum(clientId, clientGuid, id, bytevalue, format.format(startDate), format.format(new Date()));
+//            if (StringUtils.isNotEmpty(c) && c.contains("完成")) {
+//                List<Date> dates = new ArrayList<>();
+//                List<String> finals = new ArrayList<>();
+//                Document parse = Jsoup.parse(c);
+//                Elements blood = parse.getElementsByTag("blood");//
+//                blood.forEach(bs -> {
+//                    Elements aFinal = bs.getElementsByTag("FINAL");
+//                    Elements collectddate = bs.getElementsByTag("COLLECTDDATE");
+//                    String text = collectddate.text();
+//                    String ainal = aFinal.text();
+//                    Date date = new DateTime(text).toDate();
+//                    dates.add(date);
+//                    finals.add(ainal);
+//                    //                System.out.println(text);
+//                    //                System.out.println(ainal);
+//                });
+//                if (CollectionUtils.isNotEmpty(dates)) {
+//
+//                    max = Collections.max(dates);
+//                    int i = dates.indexOf(max);
+//                    type = finals.get(i);
+//                }
+//            } else {
+//
+//                Map<String, Object> smap = getSignParams("bisp-test", "123456");
+//                String sign = (String) smap.get("sign");
+//                String timestamp1 = (String) smap.get("timestamp");
+//                //提交参数设置
+//                MultiValueMap<String, String> map1 = new LinkedMultiValueMap<>();
+//                url = "https://hbms.bgi.com/bisp-all2/intf?method=findReportSummary";
+//                //440883198901020015
+//                String idsfz = id;
+//                map1.add("timestamp", timestamp1);
+//                map1.add("sign", sign);
+//                map1.add("syscode", "bisp-test");
+//                map1.add("params", "{\"cardId\":\"" + idsfz + "\"}");
+//
+//                headers = new HttpHeaders();
+//                headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//                HttpEntity<MultiValueMap<String, String>> request1 =
+//                        new HttpEntity<MultiValueMap<String, String>>(map1, headers);
+//                Hdnucleic hdnucleic = restTemplate.postForObject(url, request1, Hdnucleic.class);
+//                List<HdnucleicRow> rows = hdnucleic.getRows();
+//                System.out.println(rows);
+//                List<String> dates = new ArrayList<>();
+//                List<String> isPositives = new ArrayList<>();
+//                if (CollectionUtils.isNotEmpty(rows)) {
+//                    for (HdnucleicRow row : rows) {
+//                        String sampleTestDatePre = row.getSampleTestDatePre();
+//                        String sampleTestTimePre = row.getSampleTestTimePre();
+//                        String sampleTestDateSims = row.getSampleTestDateSims();
+//                        String sampleTestTimeSims = row.getSampleTestTimeSims();
+//                        String isPositive = row.getIsPositive();
+//                        if (!Objects.equals("00000000", sampleTestDatePre)) {
+//                            dates.add(sampleTestDatePre + sampleTestTimePre);
+//                            isPositives.add(isPositive);
+//                        } else if (!Objects.equals("00000000", sampleTestDateSims)) {
+//                            dates.add(sampleTestDateSims + sampleTestTimeSims);
+//                            isPositives.add(isPositive);
+//                        }
+//                    }
+//                }
+//                format = new SimpleDateFormat("yyyyMMddHHmmss");//日期格式
+//                if (CollectionUtils.isNotEmpty(dates)) {
+//                    String maxs = Collections.max(dates);
+//                    max = format.parse(maxs);
+//                    int i = dates.indexOf(maxs);
+//                    type = isPositives.get(i);
+//                }
+//            }
+//
+//            mapvalue = new HashMap();
+//            switch (type) {
+//                case "阴性":
+//                    type = "1";
+//                    break;
+//                case "阳性":
+//                    type = "2";
+//                    break;
+//                case "Y":
+//                    type = "2";
+//                    break;
+//                case "N":
+//                    type = "1";
+//                    break;
+//                case "F":
+//                    type = "0";
+//                    break;
+//                default:
+//            }
         } catch (Exception e) {
 
         }
-        mapvalue.put("max", max);
-        mapvalue.put("type", type);
-        mapvalue.put("result", result);
-        mapvalue.put("reason", reason);
+//        mapvalue.put("max", max);
+//        mapvalue.put("type", type);
+//        mapvalue.put("result", result);
+//        mapvalue.put("reason", reason);
+//
+//        log.info(max + "--------" + type);
+        return new Result(true, StatusCode.OK, health);
+    }
 
-        log.info(max + "--------" + type);
-        return new Result(true, StatusCode.OK, mapvalue);
+
+    @Override
+    public Result nucleicById(String id) {
+
+
+        return null;
+    }
+
+    @Override
+    public Result AllDevice() {
+        String url = "http://118.123.172.205:2095/receiver/allCarPositions";
+        String forObject = restTemplate.getForObject(url, String.class);
+        List<Device> devices = JSON.parseArray(forObject, Device.class);
+
+        Map<String, BigDecimal> m = new HashMap<>();
+        devices.forEach(d->{
+           long i = new Date().getTime() - d.getGpsTime().getTime();
+            System.out.println(i);
+        });
+        System.out.println(m.size());
+
+        System.out.println(devices);
+        return new Result(true, StatusCode.OK, devices);
     }
 
     /**
@@ -256,8 +269,10 @@ public class RestTemplateServiceImpl implements RestTemplateService {
      * @return
      */
     public User doGetWith2(String url) {
-        User user = restTemplate.getForObject(url, User.class);
-        return user;
+        url = "http://118.123.172.205:2095/receiver/allCarPositions";
+        List<Device> forObject = (List<Device>) restTemplate.getForObject(url, Device.class);
+        System.out.println(forObject);
+        return null;
     }
 
     /**

@@ -2,14 +2,12 @@ package com.bohu.dao.Sharding;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.bohu.pojo.Course;
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 //import tk.mybatis.mapper.common.BaseMapper;
 
-@Repository
-@MapperScan("com.bohu.dao.AppstoreSharding")
+//@Repository
+//@MapperScan("com.bohu.dao.AppstoreSharding")
 //@Mapper
 public interface CourseMapper extends BaseMapper<Course> {
     int deleteByPrimaryKey(Long cid);

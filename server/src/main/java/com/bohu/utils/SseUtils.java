@@ -1,16 +1,11 @@
 package com.bohu.utils;
 
 import com.bohu.service.SseEmitterServer;
-import com.spire.doc.FileFormat;
-import com.spire.doc.Section;
-import com.spire.doc.TextWatermark;
-import com.spire.doc.documents.WatermarkLayout;
 import com.sun.org.slf4j.internal.Logger;
 import com.sun.org.slf4j.internal.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

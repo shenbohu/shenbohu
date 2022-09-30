@@ -1,8 +1,8 @@
 package com.bohu.service;
 
-import com.bohu.pojo.User;
 import com.bohu.entity.PageResult;
 import com.bohu.entity.Result;
+import com.bohu.pojo.User;
 import com.bohu.pojo.vo.UserVO;
 
 import javax.servlet.http.HttpServletResponse;

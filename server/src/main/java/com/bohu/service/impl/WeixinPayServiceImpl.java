@@ -3,12 +3,11 @@ package com.bohu.service.impl;
 
 import com.bohu.entity.MessageConstant;
 import com.bohu.entity.Result;
+import com.bohu.entity.StatusCode;
 import com.bohu.service.WeixinPayService;
 import com.bohu.utils.HttpClient;
 import com.bohu.utils.MatrixToImageWriterWithLogo;
-import com.bohu.entity.StatusCode;
 import com.github.wxpay.sdk.WXPayUtil;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;

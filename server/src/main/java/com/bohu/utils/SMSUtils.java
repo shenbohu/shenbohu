@@ -7,15 +7,11 @@ import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
-//import com.netflix.client.ClientException;
 import lombok.Data;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
-
-import javax.security.auth.kerberos.KerberosKey;
-import java.security.Key;
 
 /**
  * @ClassName SMSUtils

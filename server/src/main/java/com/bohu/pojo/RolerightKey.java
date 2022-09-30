@@ -1,7 +1,8 @@
 package com.bohu.pojo;
 
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * roleright

@@ -2,13 +2,10 @@ package com.bohu.controller;
 
 
 import com.alibaba.fastjson.JSON;
-
-
 import com.bohu.entity.Result;
-import com.bohu.service.WeixinPayService;
 import com.bohu.entity.StatusCode;
+import com.bohu.service.WeixinPayService;
 import com.github.wxpay.sdk.WXPayUtil;
-//import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RequestMapping;
