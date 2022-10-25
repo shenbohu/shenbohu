@@ -6,17 +6,11 @@ import org.assertj.core.util.DateUtil;
 import sun.misc.BASE64Encoder;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import static sun.security.x509.CertificateAlgorithmId.ALGORITHM;
 
 /**
  * @ClassName SignParams

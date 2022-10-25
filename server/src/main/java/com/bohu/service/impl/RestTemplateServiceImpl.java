@@ -239,12 +239,13 @@ public class RestTemplateServiceImpl implements RestTemplateService {
 
         Map<String, BigDecimal> m = new HashMap<>();
         devices.forEach(d->{
-           long i = new Date().getTime() - d.getGpsTime().getTime();
-            System.out.println(i);
+           long i = (new Date().getTime() - d.getGpsTime().getTime()) / (1000 *60 *60);
+           if (new Date().getTime()-d.getGpsTime().getTime() < 5000) {
+               System.out.println(1);
+           }
+            System.out.println(i + "------" + d.getGpsTime());
         });
-        System.out.println(m.size());
 
-        System.out.println(devices);
         return new Result(true, StatusCode.OK, devices);
     }
 

@@ -1,8 +1,6 @@
 package com.bohu;
 
 import com.bohu.dao.Appstore.OrderMapper;
-import com.bohu.pojo.Order;
-import com.bohu.pojo.TUser;
 import org.assertj.core.util.DateUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
